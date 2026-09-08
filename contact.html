@@ -187,6 +187,39 @@
     const button = document.getElementById("send-btn");
     const topic = document.getElementById("topic");
     const mailSubject = document.getElementById("mail-subject");
+    const emailInput = document.getElementById("email");
+
+    const disposableDomains = new Set([
+      "mailinator.com", "guerrillamail.com", "10minutemail.com",
+      "tempmail.com", "temp-mail.org", "yopmail.com", "trashmail.com",
+      "getnada.com", "sharklasers.com", "discard.email", "moakt.com"
+    ]);
+
+    const typoFixes = {
+      "gmail.con": "gmail.com",
+      "gmail.co": "gmail.com",
+      "gamil.com": "gmail.com",
+      "gmial.com": "gmail.com",
+      "yahooo.com": "yahoo.com",
+      "hotnail.com": "hotmail.com",
+      "outlok.com": "outlook.com"
+    };
+
+    function emailLooksValid(value) {
+      const email = (value || "").trim().toLowerCase();
+      const basic = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+      if (!basic.test(email)) {
+        return { ok: false, message: "Please enter a valid email address." };
+      }
+      const domain = email.split("@")[1];
+      if (typoFixes[domain]) {
+        return { ok: false, message: "Did you mean @" + typoFixes[domain] + "?" };
+      }
+      if (disposableDomains.has(domain)) {
+        return { ok: false, message: "Please use a regular email address, not a temporary one." };
+      }
+      return { ok: true, email };
+    }
 
     function fillSenderMeta() {
       document.getElementById("meta-page-url").value = location.href;
@@ -208,6 +241,15 @@
       event.preventDefault();
       status.className = "status";
       status.textContent = "";
+
+      const emailCheck = emailLooksValid(emailInput.value);
+      if (!emailCheck.ok) {
+        status.className = "status err";
+        status.textContent = emailCheck.message;
+        emailInput.focus();
+        return;
+      }
+      emailInput.value = emailCheck.email;
 
       if (!captchaToken()) {
         status.className = "status err";
