@@ -107,6 +107,15 @@
           <input type="hidden" name="subject" id="mail-subject" value="WEB Contact - Vista Homes HOA">
           <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
 
+          <input type="hidden" name="page_url" id="meta-page-url" value="">
+          <input type="hidden" name="page_title" id="meta-page-title" value="">
+          <input type="hidden" name="referrer" id="meta-referrer" value="">
+          <input type="hidden" name="user_agent" id="meta-user-agent" value="">
+          <input type="hidden" name="language" id="meta-language" value="">
+          <input type="hidden" name="timezone" id="meta-timezone" value="">
+          <input type="hidden" name="screen" id="meta-screen" value="">
+          <input type="hidden" name="submitted_at" id="meta-submitted-at" value="">
+
           <div class="row">
             <div>
               <label for="name">Full name</label>
@@ -180,6 +189,17 @@
     const topic = document.getElementById("topic");
     const mailSubject = document.getElementById("mail-subject");
 
+    function fillSenderMeta() {
+      document.getElementById("meta-page-url").value = location.href;
+      document.getElementById("meta-page-title").value = document.title;
+      document.getElementById("meta-referrer").value = document.referrer || "(direct)";
+      document.getElementById("meta-user-agent").value = navigator.userAgent;
+      document.getElementById("meta-language").value = navigator.language || "";
+      document.getElementById("meta-timezone").value = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      document.getElementById("meta-screen").value = screen.width + "x" + screen.height;
+      document.getElementById("meta-submitted-at").value = new Date().toISOString();
+    }
+
     function captchaToken() {
       const field = form.querySelector('[name="h-captcha-response"], [name="g-recaptcha-response"]');
       return field && field.value ? field.value.trim() : "";
@@ -196,6 +216,7 @@
         return;
       }
 
+      fillSenderMeta();
       button.disabled = true;
       button.textContent = "Sending…";
       mailSubject.value = "WEB Contact - Vista Homes HOA : " + (topic.value || "Message");
