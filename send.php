@@ -52,7 +52,7 @@ $encodedName = function_exists('mb_encode_mimeheader')
 $headers = [
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',
-    'From: Vista Homes HOA Website <no-reply@vistahomeshoahoa.net>',
+    'From: Vista Homes HOA Website <no-reply@vistahomeshoa.net>',
     'Reply-To: ' . $encodedName . ' <' . $email . '>',
     'X-Mailer: VistaHomesHOA-ContactForm'
 ];
