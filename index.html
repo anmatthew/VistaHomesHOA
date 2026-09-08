@@ -93,15 +93,46 @@
       font-weight: 500;
     }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     nav a {
       color: #e9efe8;
       text-decoration: none;
       font-size: 0.92rem;
       font-weight: 500;
-      margin-left: 22px;
+      margin-left: 18px;
     }
 
     nav a:hover { color: var(--gold-soft); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--gold);
+      color: var(--navy-deep);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.04em;
+      padding: 10px 16px;
+      border-radius: 999px;
+      margin-left: 18px;
+      white-space: nowrap;
+    }
+
+    .btn:hover { filter: brightness(1.06); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--gold-soft);
+      border: 1.5px solid var(--gold);
+    }
 
     .hero {
       position: relative;
@@ -115,9 +146,7 @@
       align-items: end;
     }
 
-    .hero-copy {
-      padding: 56px 0 48px;
-    }
+    .hero-copy { padding: 56px 0 48px; }
 
     .eyebrow {
       display: inline-block;
@@ -144,6 +173,9 @@
       font-size: 1.08rem;
     }
 
+    .hero-actions { margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero .btn { margin-left: 0; }
+
     main { padding: 56px 0 24px; }
 
     .intro {
@@ -169,10 +201,7 @@
       margin-bottom: 10px;
     }
 
-    .lead {
-      color: var(--muted);
-      font-size: 1.05rem;
-    }
+    .lead { color: var(--muted); font-size: 1.05rem; }
 
     .grid {
       display: grid;
@@ -251,6 +280,9 @@
       font-size: 0.95rem;
     }
 
+    .portal-list { margin: 12px 0 18px; color: var(--muted); padding-left: 18px; }
+    .portal-list li { margin: 4px 0; }
+
     footer {
       margin-top: 40px;
       background: var(--navy-deep);
@@ -282,11 +314,14 @@
         <div class="mark">VH</div>
         <h1>Vista Homes <span>Homeowners Association</span></h1>
       </a>
-      <nav>
-        <a href="#welcome">Welcome</a>
-        <a href="#management">Management</a>
-        <a href="#meetings">Meetings</a>
-      </nav>
+      <div class="nav-right">
+        <nav>
+          <a href="#welcome">Welcome</a>
+          <a href="#management">Management</a>
+          <a href="#meetings">Meetings</a>
+        </nav>
+        <a class="btn" href="https://residents.vistahomeshoa.org" target="_blank" rel="noopener">Homeowners Portal</a>
+      </div>
     </div>
   </header>
 
@@ -295,6 +330,10 @@
       <div class="eyebrow">Community Living</div>
       <h2>A well-kept home for our neighborhood.</h2>
       <p>Official site for residents of Vista Homes — notices, contacts, and upcoming Board of Directors meetings in one place.</p>
+      <div class="hero-actions">
+        <a class="btn" href="https://residents.vistahomeshoa.org" target="_blank" rel="noopener">Open Homeowners Portal</a>
+        <a class="btn btn-outline" href="#meetings">View meetings</a>
+      </div>
     </div>
   </section>
 
@@ -303,12 +342,18 @@
       <div>
         <div class="eyebrow">Welcome</div>
         <h3>Serving the owners of Vista Homes</h3>
-        <p class="lead">The Association works to maintain common areas, support property values, and keep residents informed. Please use the contacts below for assessments, maintenance, architectural requests, and general questions.</p>
+        <p class="lead">The Association works to maintain common areas, support property values, and keep residents informed. Use the Homeowners Portal to pay assessments, review account statements, and submit forms.</p>
       </div>
-      <div class="card">
-        <div class="label">Community snapshot</div>
-        <p><strong>Location:</strong> 5844 S. Stony Island Avenue<br>Hyde Park, Chicago, IL 60637</p>
-        <p style="margin-top:10px;"><strong>Residents:</strong> Historic full-service cooperative community with on-site staff, garage parking, and shared amenities.</p>
+      <div class="card" id="portal">
+        <div class="label">Resident access</div>
+        <h3>Homeowners Portal</h3>
+        <p class="lead">Sign in to manage your account online.</p>
+        <ul class="portal-list">
+          <li>Pay assessments and view statements</li>
+          <li>Download documents and forms</li>
+          <li>Submit architectural or work-order requests</li>
+        </ul>
+        <a class="btn" href="https://residents.vistahomeshoa.org" target="_blank" rel="noopener">Sign in to portal</a>
       </div>
     </section>
 
@@ -365,7 +410,7 @@
   <footer>
     <div class="wrap">
       <div>© 2026 <strong>Vista Homes HOA</strong>. For residents and owners.</div>
-      <div>Questions? Call (773) 363-2717</div>
+      <div><a href="https://residents.vistahomeshoa.org" target="_blank" rel="noopener" style="color:#e8d7a8;">Homeowners Portal</a> · (773) 363-2717</div>
     </div>
   </footer>
 </body>
