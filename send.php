@@ -34,7 +34,7 @@ if ($name === '' || $subject === '' || $message === '' || !filter_var($email, FI
     exit;
 }
 
-$to = 'directors@vistahomeshoa.net'; // change this
+$to = 'directors@vistahomeshoa.net'; // email
 $mailSubject = 'WEB Contact - Vista Homes HOA : ' . $subject;
 
 $body  = "A message was submitted from the Vista Homes HOA website.\n\n";
