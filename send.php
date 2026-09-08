@@ -8,25 +8,30 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Honeypot — bots often fill hidden fields
 if (!empty($_POST['website'])) {
     echo json_encode(['ok' => true]);
     exit;
 }
 
-function clean($key, $max = 200) {
-    $value = trim((string)($_POST[$key] ?? ''));
-    $value = str_replace(["\r", "\n"], ' ', $value);
-    return mb_substr($value, 0, $max);
+function field($key, $max = 200) {
+    $value = isset($_POST[$key]) ? trim((string) $_POST[$key]) : '';
+    $value = str_replace(["\r", "\n", "\0"], ' ', $value);
+    if (function_exists('mb_substr')) {
+        return mb_substr($value, 0, $max);
+    }
+    return substr($value, 0, $max);
 }
 
-$name    = clean('name', 120);
-$email   = clean('email', 160);
-$unit    = clean('unit', 80);
-$phone   = clean('phone', 40);
-$subject = clean('subject', 80);
-$message = trim((string)($_POST['message'] ?? ''));
-$message = mb_substr($message, 0, 4000);
+function header_safe($value) {
+    return str_replace(["\r", "\n", "\0"], '', $value);
+}
+
+$name    = field('name', 120);
+$email   = field('email', 160);
+$unit    = field('unit', 80);
+$phone   = field('phone', 40);
+$subject = field('subject', 80);
+$message = field('message', 4000);
 
 if ($name === '' || $subject === '' || $message === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(422);
@@ -34,7 +39,8 @@ if ($name === '' || $subject === '' || $message === '' || !filter_var($email, FI
     exit;
 }
 
-$to = 'directors@vistahomeshoa.net'; // email
+$to          = 'directors@vistahomeshoa.net';
+$fromAddress = 'no-reply@vistahomeshoa.net';
 $mailSubject = 'WEB Contact - Vista Homes HOA : ' . $subject;
 
 $body  = "A message was submitted from the Vista Homes HOA website.\n\n";
@@ -45,23 +51,24 @@ $body .= "Phone:   {$phone}\n";
 $body .= "Subject: {$subject}\n\n";
 $body .= $message . "\n";
 
-$encodedName = function_exists('mb_encode_mimeheader')
-    ? mb_encode_mimeheader($name, 'UTF-8')
-    : $name;
-
-$headers = [
+$headers = implode("\r\n", [
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',
-    'From: Vista Homes HOA Website <no-reply@vistahomeshoa.net>',
-    'Reply-To: ' . $encodedName . ' <' . $email . '>',
-    'X-Mailer: VistaHomesHOA-ContactForm'
-];
+    'From: Vista Homes HOA Website <' . $fromAddress . '>',
+    'Reply-To: ' . header_safe($email),
+    'X-Mailer: PHP/' . phpversion()
+]);
 
-$sent = @mail($to, $mailSubject, $body, implode("\r\n", $headers));
+// 5th argument sets the envelope sender. Many hosts require this
+// and it must be an address on YOUR domain.
+$sent = mail($to, $mailSubject, $body, $headers, '-f' . $fromAddress);
 
 if (!$sent) {
     http_response_code(500);
-    echo json_encode(['ok' => false, 'error' => 'The server could not send email just now. Please call the office or email directly.']);
+    echo json_encode([
+        'ok' => false,
+        'error' => 'The server could not send email. Ask the host to enable PHP mail() for ' . $fromAddress . ', or use SMTP.'
+    ]);
     exit;
 }
 
