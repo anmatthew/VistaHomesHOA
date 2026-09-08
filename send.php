@@ -34,7 +34,7 @@ if ($name === '' || $subject === '' || $message === '' || !filter_var($email, FI
     exit;
 }
 
-$to = 'an.matthew@gmail.com'; // change this
+$to = 'directors@vistahomeshoa.net'; // change this
 $mailSubject = 'WEB Contact - Vista Homes HOA : ' . $subject;
 
 $body  = "A message was submitted from the Vista Homes HOA website.\n\n";
@@ -52,7 +52,7 @@ $encodedName = function_exists('mb_encode_mimeheader')
 $headers = [
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',
-    'From: Vista Homes HOA Website <no-reply@vistahomeshoa.org>',
+    'From: Vista Homes HOA Website <no-reply@vistahomeshoahoa.net>',
     'Reply-To: ' . $encodedName . ' <' . $email . '>',
     'X-Mailer: VistaHomesHOA-ContactForm'
 ];
